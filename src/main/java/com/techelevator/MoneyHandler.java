@@ -45,6 +45,9 @@ public abstract class MoneyHandler {
         }
         return changeList;
     }
-
+public void feedMoney(double moneyIn){
+        double totalMoneyIn = 0;
+        totalMoneyIn += moneyIn;
+}
 
 }

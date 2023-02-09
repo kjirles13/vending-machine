@@ -30,10 +30,9 @@ public class VendingMachineCLI {
 
     public void run() {
         boolean running = true;
-
+        double totalMoneyIn = 0;
         // Create vending machine object and set inventory
         VendingMachine vendingMachine = new VendingMachine();
-        double totalMoneyIn = 0.0;
         Map<String, Item> inventoryMap = null;
         try {
             inventoryMap = new HashMap<>(vendingMachine.updateInventoy());
@@ -51,9 +50,13 @@ public class VendingMachineCLI {
             } else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
                 // do purchase
                 String purchaseChoice = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
-                if (choice.equals(PURCHASE_MENU_OPTION_FEED_MONEY)) {
-
-                } else if (choice.equals(PURCHASE_MENU_OPTION_SELECT_PRODUCT)) {
+                if (purchaseChoice.equals(PURCHASE_MENU_OPTION_FEED_MONEY)) {
+                    System.out.println("\nTotal money inserted: $" + totalMoneyIn);
+                    System.out.print("How much money would you like to insert? >>> ");
+                    totalMoneyIn += Double.parseDouble(menu.userInputScanner());
+                    vendingMachine.feedMoney(totalMoneyIn);
+                    System.out.println("\nYour new total is: $" +totalMoneyIn);
+                } else if (purchaseChoice.equals(PURCHASE_MENU_OPTION_SELECT_PRODUCT)) {
 //                    switch (choice) {
 //                        case "1":
 //                            System.out.print("Please deposit money >>> " );

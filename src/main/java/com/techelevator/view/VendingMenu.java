@@ -50,4 +50,8 @@ public class VendingMenu {
 		out.print(System.lineSeparator() + "Please choose an option >>> ");
 		out.flush();
 	}
+	public String userInputScanner(){
+		String userInput = in.nextLine();
+		return userInput;
+	}
 }
