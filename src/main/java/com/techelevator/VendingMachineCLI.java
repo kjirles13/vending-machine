@@ -75,7 +75,7 @@ public class VendingMachineCLI {
                     //take them back to main menu
                 }
             } else if (choice.equals(MAIN_MENU_OPTION_EXIT)) {
-                List<Integer> moneyArrayList = new ArrayList<>(vendingMachine.getChange(5.75));
+                List<Integer> moneyArrayList = new ArrayList<>(vendingMachine.getChange(totalMoneyIn));
                 System.out.println(String.format("\nHere's your change:\n\nDollars: %s\nQuarters: %s\nDimes: %s\nNickels %s\nTotal: %s", moneyArrayList.get(0), moneyArrayList.get(1), moneyArrayList.get(2), moneyArrayList.get(3), totalMoneyIn));
                 System.out.println("\nThank you for using the Vending Machine!");
                 running = false;
