@@ -6,8 +6,9 @@ public class Item {
     private double cost;
     private String name;
     private String type;
+    private int inventoryCount;
 
-    public Item(String name, double cost, String type) {
+    public Item(String name, double cost, String type, int inventoryCount) {
         this.name = name;
         this.cost = cost;
         this.type = type;
