@@ -24,7 +24,9 @@ public class VendingMachineCLI {
 
 	public void run() {
 		boolean running = true;
+//		VendingMachine vendingMachine = new VendingMachine();
 		while (running) {
+
 			String choice = (String) menu.getChoiceFromOptions(MAIN_MENU_OPTIONS);
 
 			// A switch statement could also be used here.  Your choice.

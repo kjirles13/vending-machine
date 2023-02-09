@@ -14,6 +14,14 @@ public abstract class MoneyHandler {
         newTotal.add(BigDecimal.valueOf(newAmount));
         return newTotal;
     }
+    public BigDecimal makePurchase(double total, double costOfItem){
+        BigDecimal change = BigDecimal.valueOf(total).subtract(BigDecimal.valueOf(costOfItem));
+      return change;
+    }
+    public BigDecimal getChange(){
+
+        return null;
+    }
 
    /* DecimalFormat df = new DecimalFormat("0.00");
 
