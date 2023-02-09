@@ -3,37 +3,56 @@ package com.techelevator;
 import java.math.BigDecimal;
 
 public class Item {
-    private String placeInVending;
-    private BigDecimal costOfCandy;
-    private String candyName;
-    private int candyInventory;
-    private String typeOfCandy;
+    private String slotLocation;
+    private BigDecimal cost;
+    private String name;
+    private int amount;
+    private String type;
 
-    public Item(String placeInVending, BigDecimal costOfCandy, String candyName, int candyInventory, String typeOfCandy) {
-        this.placeInVending = placeInVending;
-        this.costOfCandy = costOfCandy;
-        this.candyName = candyName;
-        this.candyInventory = candyInventory;
-        this.typeOfCandy = typeOfCandy;
+    public Item(String slotLocation, BigDecimal cost, String name, int amount, String type) {
+        this.slotLocation = slotLocation;
+        this.cost = cost;
+        this.name = name;
+        this.amount = amount;
+        this.type = type;
     }
 
-    public String getPlaceInVending() {
-        return placeInVending;
+    public String getSlotLocation() {
+        return slotLocation;
     }
 
-    public BigDecimal getCostOfCandy() {
-        return costOfCandy;
+    public BigDecimal getCost() {
+        return cost;
     }
 
-    public String getCandyName() {
-        return candyName;
+    public String getName() {
+        return name;
     }
 
-    public int getCandyInventory() {
-        return candyInventory;
+    public int getAmount() {
+        return amount;
     }
 
-    public String getTypeOfCandy() {
-        return typeOfCandy;
+    public String getType() {
+        return type;
+    }
+
+    private String getPhrase() {
+        String phrase = "";
+        switch (getType()) {
+            case "Chip":
+                phrase = "Crunch Crunch, It's Yummy!";
+                break;
+            case "Candy":
+                phrase = "Munch Munch, Mmm Mmm Good!";
+                break;
+            case "Drink":
+                phrase = "Glug Glug, Chug Chug!";
+                break;
+            case "Gum":
+                phrase = "Chew Chew, Pop!";
+                break;
+        }
+        return phrase;
     }
 }
