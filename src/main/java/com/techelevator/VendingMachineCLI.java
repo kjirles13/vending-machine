@@ -2,8 +2,6 @@ package com.techelevator;
 
 import com.techelevator.view.VendingMenu;
 
-
-
 public class VendingMachineCLI {
 
 	private static final String MAIN_MENU_OPTION_DISPLAY_ITEMS = "Display Vending Machine Items";
