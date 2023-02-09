@@ -3,6 +3,7 @@ package com.techelevator;
 import com.techelevator.view.VendingMenu;
 
 import java.io.FileNotFoundException;
+import java.text.DecimalFormat;
 import java.util.*;
 
 public class VendingMachineCLI {
@@ -27,7 +28,8 @@ public class VendingMachineCLI {
 
     public void run() {
         boolean running = true;
-        double totalMoneyIn = 0;
+        DecimalFormat df = new DecimalFormat("0.00");
+        double totalMoneyIn = 0.0;
 
         // Create vending machine object and set inventory
         VendingMachine vendingMachine = new VendingMachine();
@@ -47,13 +49,13 @@ public class VendingMachineCLI {
             if (choice.equals(MAIN_MENU_OPTION_DISPLAY_ITEMS)) {
                 displayInventory(inventoryMap);
             } else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
-                System.out.println("\nCurrent Money Provided: $" + totalMoneyIn);
+                System.out.println("\nCurrent Money Provided: $" + df.format(totalMoneyIn));
                 String purchaseChoice = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
 
                 if (purchaseChoice.equals(PURCHASE_MENU_OPTION_FEED_MONEY)) {
                     boolean runningFeedMoney = true;
                     while(runningFeedMoney) {
-                        System.out.println("\nCurrent Money Provided: $" + totalMoneyIn);
+                        System.out.println("\nCurrent Money Provided: $" + df.format(totalMoneyIn));
                         System.out.println("To exit Feed Money menu, enter '0'\n");
                         System.out.print("Feed Money here >>> ");
                         String userInput = menu.userInputScanner();
