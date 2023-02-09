@@ -14,6 +14,10 @@ public class Item {
         this.type = type;
     }
 
+    public int getInventoryCount() {
+        return inventoryCount;
+    }
+
     public double getCost() {
         return cost;
     }

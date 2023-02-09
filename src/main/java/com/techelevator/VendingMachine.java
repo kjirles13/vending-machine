@@ -2,11 +2,13 @@ package com.techelevator;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
 public class VendingMachine extends MoneyHandler {
+
 
     public Map<String, Item> updateInventoy() throws FileNotFoundException {
         File inputFile = new File("vendingmachine.csv");
