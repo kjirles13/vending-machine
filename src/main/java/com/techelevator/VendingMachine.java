@@ -9,7 +9,6 @@ import java.util.Scanner;
 
 public class VendingMachine extends MoneyHandler {
 
-
     public Map<String, Item> updateInventoy() throws FileNotFoundException {
         File inputFile = new File("vendingmachine.csv");
         Scanner fileScanner = new Scanner(inputFile);

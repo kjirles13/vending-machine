@@ -48,30 +48,33 @@ public class VendingMachineCLI {
             } else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
                 // do purchase
                 String purchaseChoice = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
-                if (choice.equals(PURCHASE_MENU_OPTION_FEED_MONEY)){
+                if (choice.equals(PURCHASE_MENU_OPTION_FEED_MONEY)) {
 
-                } else if (choice.equals(PURCHASE_MENU_OPTION_SELECT_PRODUCT)){
-
-                    switch (choice) {
-                        case "1":
-                            System.out.print("Please deposit money >>> " );
-
-
+                } else if (choice.equals(PURCHASE_MENU_OPTION_SELECT_PRODUCT)) {
+//                    switch (choice) {
+//                        case "1":
+//                            System.out.print("Please deposit money >>> " );
+//
+//
 //                            System.out.println(vendingMachine.countMoney());
-                            break;
-                        case "2":
-                            displayInventory(inventoryMap);
-                            break;
-                        case "3":
+//                            break;
+//                        case "2":
+//                            displayInventory(inventoryMap);
+//                            break;
+//                        case "3":
+//
+//
+//                            break;
 
-
-                            break;
-
-
-                    }
+                } else if (choice.equals(PURCHASE_MENU_OPTION_FINISH_TRANSACTION)) {
+                    //print out their item
+                    //print out their new total
+                    //take them back to main menu
                 }
-
+            } else if (choice.equals(MAIN_MENU_OPTION_EXIT)) {
+                vendingMachine.getChange(5.75);
             }
+
         }
     }
 
@@ -79,7 +82,6 @@ public class VendingMachineCLI {
         VendingMenu menu = new VendingMenu(System.in, System.out);
         VendingMachineCLI cli = new VendingMachineCLI(menu);
         cli.run();
-
     }
 
     public void displayInventory(Map<String, Item> inventoryMap) {
