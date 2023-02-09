@@ -38,7 +38,7 @@ public abstract class MoneyHandler {
                 int count = (int) (total / changeConstants.get(i));
                 changeList.set(i, count);
                 total %= changeConstants.get(i);
-                System.out.println(changeList.get(i));;
+
             }
         } catch (ArithmeticException ex) {
             return changeList;

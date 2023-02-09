@@ -3,7 +3,9 @@ package com.techelevator;
 import com.techelevator.view.VendingMenu;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class VendingMachineCLI {
@@ -31,6 +33,7 @@ public class VendingMachineCLI {
 
         // Create vending machine object and set inventory
         VendingMachine vendingMachine = new VendingMachine();
+        double totalMoneyIn = 0.0;
         Map<String, Item> inventoryMap = null;
         try {
             inventoryMap = new HashMap<>(vendingMachine.updateInventoy());
@@ -72,7 +75,10 @@ public class VendingMachineCLI {
                     //take them back to main menu
                 }
             } else if (choice.equals(MAIN_MENU_OPTION_EXIT)) {
-                vendingMachine.getChange(5.75);
+                List<Integer> moneyArrayList = new ArrayList<>(vendingMachine.getChange(5.75));
+                System.out.println(String.format("\nHere's your change:\n\nDollars: %s\nQuarters: %s\nDimes: %s\nNickels %s\nTotal: %s", moneyArrayList.get(0), moneyArrayList.get(1), moneyArrayList.get(2), moneyArrayList.get(3), totalMoneyIn));
+                System.out.println("\nThank you for using the Vending Machine!");
+                running = false;
             }
 
         }
