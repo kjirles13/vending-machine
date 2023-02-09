@@ -3,10 +3,7 @@ package com.techelevator;
 import com.techelevator.view.VendingMenu;
 
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class VendingMachineCLI {
 
@@ -31,13 +28,15 @@ public class VendingMachineCLI {
     public void run() {
         boolean running = true;
         double totalMoneyIn = 0;
+
         // Create vending machine object and set inventory
         VendingMachine vendingMachine = new VendingMachine();
-        Map<String, Item> inventoryMap = null;
+        TreeMap<String, Item> inventoryMap = null;
+
         try {
-            inventoryMap = new HashMap<>(vendingMachine.updateInventoy());
+            inventoryMap = new TreeMap<>(vendingMachine.updateInventoy());
         } catch (FileNotFoundException ex) {
-            System.out.println("Inventory file not found. Cannot start Vending Machine");
+            System.out.println("Inventory file not found. Cannot start Vending Machine.");
             running = false;
         }
 
@@ -48,14 +47,26 @@ public class VendingMachineCLI {
             if (choice.equals(MAIN_MENU_OPTION_DISPLAY_ITEMS)) {
                 displayInventory(inventoryMap);
             } else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
-                // do purchase
+                System.out.println("\nCurrent Money Provided: $" + totalMoneyIn);
                 String purchaseChoice = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
+
                 if (purchaseChoice.equals(PURCHASE_MENU_OPTION_FEED_MONEY)) {
-                    System.out.println("\nTotal money inserted: $" + totalMoneyIn);
-                    System.out.print("How much money would you like to insert? >>> ");
-                    totalMoneyIn += Double.parseDouble(menu.userInputScanner());
-                    vendingMachine.feedMoney(totalMoneyIn);
-                    System.out.println("\nYour new total is: $" +totalMoneyIn);
+                    boolean runningFeedMoney = true;
+                    while(runningFeedMoney) {
+                        System.out.println("\nCurrent Money Provided: $" + totalMoneyIn);
+                        System.out.println("To exit Feed Money menu, enter '0'\n");
+                        System.out.print("Feed Money here >>> ");
+                        String userInput = menu.userInputScanner();
+                        if (userInput.equals("0")) {
+                            break;
+                        }
+                        try {
+                            totalMoneyIn += Double.parseDouble(userInput);
+                            vendingMachine.feedMoney(totalMoneyIn);
+                        } catch (NumberFormatException ex) {
+                            System.out.println("Oops that wasn't a number or '0'\nIf you want to leave this menu, enter '0'\nTry again:");
+                        }
+                    }
                 } else if (purchaseChoice.equals(PURCHASE_MENU_OPTION_SELECT_PRODUCT)) {
 //                    switch (choice) {
 //                        case "1":

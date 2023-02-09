@@ -1,18 +1,21 @@
 package com.techelevator;
 
+import com.sun.source.tree.Tree;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 public class VendingMachine extends MoneyHandler {
 
-    public Map<String, Item> updateInventoy() throws FileNotFoundException {
+    public TreeMap<String, Item> updateInventoy() throws FileNotFoundException {
         File inputFile = new File("vendingmachine.csv");
         Scanner fileScanner = new Scanner(inputFile);
-        Map<String, Item> itemMap = new HashMap<>();
+        TreeMap<String, Item> itemMap = new TreeMap<>();
 
         while (fileScanner.hasNextLine()) {
             String scannerLine = fileScanner.nextLine();
