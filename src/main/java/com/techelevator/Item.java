@@ -3,34 +3,22 @@ package com.techelevator;
 import java.math.BigDecimal;
 
 public class Item {
-    private String slotLocation;
-    private BigDecimal cost;
+    private double cost;
     private String name;
-    private int amount;
     private String type;
 
-    public Item(String slotLocation, BigDecimal cost, String name, int amount, String type) {
-        this.slotLocation = slotLocation;
-        this.cost = cost;
+    public Item(String name, double cost, String type) {
         this.name = name;
-        this.amount = amount;
+        this.cost = cost;
         this.type = type;
     }
 
-    public String getSlotLocation() {
-        return slotLocation;
-    }
-
-    public BigDecimal getCost() {
+    public double getCost() {
         return cost;
     }
 
     public String getName() {
         return name;
-    }
-
-    public int getAmount() {
-        return amount;
     }
 
     public String getType() {
