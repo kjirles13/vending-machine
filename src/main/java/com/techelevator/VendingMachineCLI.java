@@ -44,9 +44,26 @@ public class VendingMachineCLI {
         }
 
         System.out.println("\n======================================================");
-        System.out.println(" *  Welcome to Aaron's and Kit's Vending Machine!  *");
-        System.out.println("======================================================");
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
 
+        }
+        System.out.println(" *  Welcome to Aaron's and Kit's Vending Machine!  *");
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+
+        }
+        System.out.println("======================================================");
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+
+        }
         while (running) {
             System.out.println(spacer);
             String choice = (String) menu.getChoiceFromOptions(MAIN_MENU_OPTIONS);
@@ -54,6 +71,13 @@ public class VendingMachineCLI {
             if (choice.equals(MAIN_MENU_OPTION_DISPLAY_ITEMS)) {
                 System.out.println(spacer + "\n");
                 displayInventory(inventoryMap);
+                try {
+                    Thread.sleep(4000);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+
+                }
+
             } else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
                 boolean runningPurchaseMenu = true;
 
@@ -82,6 +106,12 @@ public class VendingMachineCLI {
                                 totalMoneyIn = menu.addToTotal(totalMoneyIn, moneyInserted);
                             } catch (NumberFormatException ex) {
                                 System.out.println("\nOops that wasn't a number or '0'\nIf you want to leave this menu, enter '0'" + spacer);
+                                try {
+                                    Thread.sleep(2000);
+                                } catch (InterruptedException ix) {
+                                    ix.printStackTrace();
+
+                                }
                             }
                         }
                     } else if (purchaseChoice.equals(PURCHASE_MENU_OPTION_SELECT_PRODUCT)) {
@@ -97,10 +127,26 @@ public class VendingMachineCLI {
 
                             if (!inventoryMap.containsKey(userInput)) {
                                 System.out.println(spacer + "\n\nThat is not a valid item.");
+                                try {
+                                    Thread.sleep(2000);
+                                } catch (InterruptedException ex) {
+                                    ex.printStackTrace();
+
+                                }
                             } else if (inventoryMap.get(userInput).getInventoryCount() == 0) {
                                 System.out.println(spacer + "\n\nOops, that item is SOLD OUT! Please try again.");
+                                try {
+                                    Thread.sleep(2000);
+                                } catch (InterruptedException ex) {
+                                    ex.printStackTrace();
+                                }
                             } else if (totalMoneyIn < inventoryMap.get(userInput).getCost()) {
                                 System.out.println(spacer + "\n\nSorry! Balance Too Low!");
+                                try {
+                                    Thread.sleep(2000);
+                                } catch (InterruptedException ex) {
+                                    ex.printStackTrace();
+                                }
                                 break;
                             } else {
                                 totalMoneyIn = makePurchase(inventoryMap, totalMoneyIn, userInput);
@@ -109,8 +155,37 @@ public class VendingMachineCLI {
                                 double cost = inventoryMap.get(userInput).getCost();
 
                                 purchasedItemList.add(userInput);
+                                System.out.println(String.format("\nDispensing %s", inventoryMap.get(userInput).getName()));
+                                try {
+                                    Thread.sleep(2000);
+                                } catch (InterruptedException ex) {
+                                    ex.printStackTrace();
 
-                                System.out.println(String.format("%s\n%s: $%.2f\n%s\n%s\nCurrent balance: $%.2f%s", spacer, name, cost, phrase, spacer, totalMoneyIn, spacer));
+                                }
+                                System.out.println("<<<<RUMBLE>>>>");
+                                try {
+                                    Thread.sleep(300);
+                                } catch (InterruptedException ex) {
+                                    ex.printStackTrace();
+                                }
+                                System.out.println("<<<<RUMBLE>>>>");
+                                try {
+                                    Thread.sleep(300);
+                                } catch (InterruptedException ex) {
+                                    ex.printStackTrace();
+                                }
+                                System.out.println("<<<<RUMBLE>>>>");
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException ex) {
+                                    ex.printStackTrace();
+                                }
+                                System.out.println(String.format("%s\n\n%s: $%.2f\n%s\n%s\nCurrent balance: $%.2f%s", spacer, name, cost, phrase, spacer, totalMoneyIn, spacer));
+                                try {
+                                    Thread.sleep(2000);
+                                } catch (InterruptedException ex) {
+                                    ex.printStackTrace();
+                                }
                                 System.out.print("\nWould you like to purchase another item? (Y/N) >>> ");
 
                                 boolean yesNoSwitchCase = true;
@@ -134,9 +209,12 @@ public class VendingMachineCLI {
                         }
                     } else if (purchaseChoice.equals(PURCHASE_MENU_OPTION_FINISH_TRANSACTION)) {
                         List<Integer> moneyArrayList = new ArrayList<>(menu.getChange(totalMoneyIn));
-
                         displayPurchasedItems(purchasedItemList, inventoryMap, totalMoneyIn);
-
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException ex) {
+                            ex.printStackTrace();
+                        }
                         System.out.println(String.format("%s\n\nHere's your change:\n\nDollars: %s\nQuarters: %s\nDimes: %s\nNickels: %s\n\tTotal: $%.2f",
                                 spacer,
                                 moneyArrayList.get(0),
@@ -145,7 +223,11 @@ public class VendingMachineCLI {
                                 moneyArrayList.get(3),
                                 totalMoneyIn
                         ));
-
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException ex) {
+                            ex.printStackTrace();
+                        }
                         totalMoneyIn = 0.00;
 
                         System.out.println(String.format("%s\nCurrent balance: $%.2f%s", spacer, totalMoneyIn, spacer));
