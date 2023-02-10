@@ -3,6 +3,7 @@ package com.techelevator;
 import com.techelevator.view.VendingMenu;
 
 import java.io.FileNotFoundException;
+import java.io.OutputStream;
 import java.sql.SQLOutput;
 import java.text.DecimalFormat;
 import java.util.*;
@@ -32,6 +33,7 @@ public class VendingMachineCLI {
     public void run() {
         boolean running = true;
         double totalMoneyIn = 0.0;
+        List<String> purchasedItemList = new ArrayList<>();
 
         TreeMap<String, Item> inventoryMap = null;
 
@@ -52,7 +54,7 @@ public class VendingMachineCLI {
                 boolean runningPurchaseMenu = true;
 
                 while (runningPurchaseMenu) {
-                System.out.println("\nCurrent Money Provided: $" + DF.format(totalMoneyIn));
+                System.out.println(String.format("\nCurrent balance: $%.2f",totalMoneyIn));
 
                 String purchaseChoice = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
 
@@ -60,7 +62,7 @@ public class VendingMachineCLI {
                         boolean runningFeedMoney = true;
 
                         while (runningFeedMoney) {
-                            System.out.println("\nCurrent Money Provided: $" + DF.format(totalMoneyIn));
+                            System.out.println(String.format("\nCurrent balance: $%.2f",totalMoneyIn));
                             System.out.println("To exit Feed Money menu, enter '0'\n");
                             System.out.print("Feed Money here >>> ");
 
@@ -87,7 +89,7 @@ public class VendingMachineCLI {
                             System.out.println("\nYour total balance: $" + totalMoneyIn);
                             System.out.print("\nChoose your item >>> ");
 
-                            String userInput = menu.userInputScanner();
+                            String userInput = menu.userInputScanner().toUpperCase();
 
                             if (!inventoryMap.containsKey(userInput)) {
                                 System.out.println("\nThat is not a valid item");
@@ -101,10 +103,13 @@ public class VendingMachineCLI {
                                 String name = inventoryMap.get(userInput).getName();
                                 double cost = inventoryMap.get(userInput).getCost();
 
+                                purchasedItemList.add(userInput);
+
                                 System.out.println(String.format("\n%s: $%.2f \nNew balance: $%.2f\n%s", name, cost, totalMoneyIn, phrase));
                                 System.out.print("\nWould you like to purchase another item? (Y/N) >>> ");
 
                                 boolean yesNoSwitchCase = true;
+
                                 while (yesNoSwitchCase) {
                                     userInput = menu.userInputScanner();
                                     switch (userInput.toUpperCase()) {
@@ -122,10 +127,22 @@ public class VendingMachineCLI {
                                 }
                             }
                         }
+                    } else if (purchaseChoice.equals(PURCHASE_MENU_OPTION_FINISH_TRANSACTION)) {
+                        List<Integer> moneyArrayList = new ArrayList<>(menu.getChange(totalMoneyIn));
 
-                    } else if (choice.equals(PURCHASE_MENU_OPTION_FINISH_TRANSACTION)) {
-                        //print out their item
-                        //print out their new total
+                        displayPurchasedItems(purchasedItemList, inventoryMap, totalMoneyIn);
+
+                        System.out.println(String.format("\nHere's your change:\n\nDollars: %s\nQuarters: %s\nDimes: %s\nNickels %s\nTotal: $%.2f",
+                                                                                                                        moneyArrayList.get(0),
+                                                                                                                        moneyArrayList.get(1),
+                                                                                                                        moneyArrayList.get(2),
+                                                                                                                        moneyArrayList.get(3),
+                                                                                                                        totalMoneyIn
+                                ));
+
+                        totalMoneyIn = 0.00;
+                        System.out.println(String.format("\nYour new balance is $%.2f", totalMoneyIn));
+
                         //take them back to main menu
                         runningPurchaseMenu = false;
                     }
@@ -133,12 +150,17 @@ public class VendingMachineCLI {
             } else if (choice.equals(MAIN_MENU_OPTION_EXIT)) {
                 List<Integer> moneyArrayList = new ArrayList<>(menu.getChange(totalMoneyIn));
 
-                System.out.println(String.format("\nHere's your change:\n\nDollars: %s\nQuarters: %s\nDimes: %s\nNickels %s\nTotal: %s", moneyArrayList.get(0), moneyArrayList.get(1), moneyArrayList.get(2), moneyArrayList.get(3), totalMoneyIn));
-                System.out.println("\nThank you for using the Vending Machine!");
+                System.out.println(String.format("\nHere's your change:\n\nDollars: %s\nQuarters: %s\nDimes: %s\nNickels %s\nTotal: $%.2f",
+                                                                                                                        moneyArrayList.get(0),
+                                                                                                                        moneyArrayList.get(1),
+                                                                                                                        moneyArrayList.get(2),
+                                                                                                                        moneyArrayList.get(3),
+                                                                                                                        totalMoneyIn
+                        ));
+                        System.out.println("\nThank you for using the Vending Machine!");
 
                 running = false;
             }
-
         }
     }
 
@@ -146,6 +168,17 @@ public class VendingMachineCLI {
         VendingMenu menu = new VendingMenu(System.in, System.out);
         VendingMachineCLI cli = new VendingMachineCLI(menu);
         cli.run();
+    }
+
+    public void displayPurchasedItems(List<String> purchsaedItems, Map<String, Item> inventoryMap, double total) {
+        System.out.println("\nHere are the item(s) you purchased:");
+
+        for (String item : purchsaedItems) {
+            String name = String.valueOf(inventoryMap.get(item).getName());
+            double cost = inventoryMap.get(item).getCost();
+
+            System.out.println(String.format("%s : $%.2f", name, cost));
+        }
     }
 
     public void displayInventory(Map<String, Item> inventoryMap) {
