@@ -155,7 +155,7 @@ public class VendingMachineCLI {
                                 double cost = inventoryMap.get(userInput).getCost();
 
                                 purchasedItemList.add(userInput);
-                                System.out.println(String.format("\nDispensing %s", inventoryMap.get(userInput).getName()));
+                                System.out.println(String.format("\nDispensing %s...", inventoryMap.get(userInput).getName()));
                                 try {
                                     Thread.sleep(2000);
                                 } catch (InterruptedException ex) {
@@ -182,7 +182,7 @@ public class VendingMachineCLI {
                                 }
                                 System.out.println(String.format("%s\n\n%s: $%.2f\n%s\n%s\nCurrent balance: $%.2f%s", spacer, name, cost, phrase, spacer, totalMoneyIn, spacer));
                                 try {
-                                    Thread.sleep(2000);
+                                    Thread.sleep(1000);
                                 } catch (InterruptedException ex) {
                                     ex.printStackTrace();
                                 }
