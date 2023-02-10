@@ -120,7 +120,7 @@ public class VendingMachineCLI {
 
     public void displayInventory(Map<String, Item> inventoryMap) {
         for (Map.Entry<String, Item> item : inventoryMap.entrySet()) {
-            System.out.println(String.format("%s : %s, $%s", item.getKey(), item.getValue().getName(), item.getValue().getCost()));
+            System.out.println(String.format("%s : %s, $%.2f", item.getKey(), item.getValue().getName(), item.getValue().getCost()));
         }
     }
 
