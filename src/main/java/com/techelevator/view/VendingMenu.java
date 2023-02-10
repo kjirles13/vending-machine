@@ -1,14 +1,17 @@
 package com.techelevator.view;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.util.Scanner;
+import com.techelevator.Item;
+import com.techelevator.MoneyHandler;
 
-public class VendingMenu {
+import java.io.*;
+import java.util.Scanner;
+import java.util.TreeMap;
+
+public class VendingMenu extends MoneyHandler {
 
 	private PrintWriter out;
 	private Scanner in;
+	private TreeMap<String, Item> itemMap = new TreeMap<>();
 
 	public VendingMenu(InputStream input, OutputStream output) {
 		this.out = new PrintWriter(output);
@@ -39,6 +42,21 @@ public class VendingMenu {
 			out.println(System.lineSeparator() + "*** " + userInput + " is not a valid option ***" + System.lineSeparator());
 		}
 		return choice;
+	}
+
+	public TreeMap<String, Item> updateInventoy() throws FileNotFoundException {
+		File inputFile = new File("vendingmachine.csv");
+		Scanner fileScanner = new Scanner(inputFile);
+
+
+		while (fileScanner.hasNextLine()) {
+			String scannerLine = fileScanner.nextLine();
+			String[] lineArray = scannerLine.split("\\|");
+			Item item = new Item(lineArray[1], Double.parseDouble(lineArray[2]), lineArray[3], 5);
+			itemMap.put(lineArray[0], item);
+		}
+		fileScanner.close();
+		return itemMap;
 	}
 
 	private void displayMenuOptions(Object[] options) {
