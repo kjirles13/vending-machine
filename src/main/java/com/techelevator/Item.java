@@ -1,7 +1,5 @@
 package com.techelevator;
 
-import java.math.BigDecimal;
-
 public class Item {
     private double cost;
     private String name;

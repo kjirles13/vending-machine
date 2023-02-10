@@ -1,7 +1,6 @@
 package com.techelevator;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,17 +11,15 @@ public abstract class MoneyHandler {
     private final int QUARTER = 25;
     private final int DOLLAR = 100;
 
-    public BigDecimal countMoney(double total, double newAmount) {
-        BigDecimal newTotal = BigDecimal.valueOf(total);
-        newTotal.add(BigDecimal.valueOf(newAmount));
-        return newTotal;
-    }
-
     public double subtractFromTotal(double total, double costOfItem) {
         BigDecimal change = BigDecimal.valueOf(total).subtract(BigDecimal.valueOf(costOfItem));
         return Double.parseDouble(String.valueOf(change));
     }
 
+    public double addToTotal(double totalMoneyIn, double userInput) {
+        BigDecimal newTotal = BigDecimal.valueOf(totalMoneyIn).add(BigDecimal.valueOf(userInput));
+        return Double.parseDouble(String.valueOf(newTotal));
+    }
 
     public List<Integer> getChange(double total) {
         total *= 100;
@@ -42,9 +39,4 @@ public abstract class MoneyHandler {
         }
         return changeList;
     }
-public void feedMoney(double moneyIn){
-        double totalMoneyIn = 0;
-        totalMoneyIn += moneyIn;
-}
-
 }
