@@ -12,10 +12,15 @@ public class Item {
         this.name = name;
         this.cost = cost;
         this.type = type;
+        this.inventoryCount = inventoryCount;
     }
 
     public int getInventoryCount() {
         return inventoryCount;
+    }
+
+    public void setInventoryCount(int inventoryCount) {
+        this.inventoryCount = inventoryCount;
     }
 
     public double getCost() {
@@ -30,7 +35,7 @@ public class Item {
         return type;
     }
 
-    private String getPhrase() {
+    public String getPhrase() {
         String phrase = "";
         switch (getType()) {
             case "Chip":

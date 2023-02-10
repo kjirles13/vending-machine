@@ -18,9 +18,9 @@ public abstract class MoneyHandler {
         return newTotal;
     }
 
-    public BigDecimal makePurchase(double total, double costOfItem) {
+    public double subtractFromTotal(double total, double costOfItem) {
         BigDecimal change = BigDecimal.valueOf(total).subtract(BigDecimal.valueOf(costOfItem));
-        return change;
+        return Double.parseDouble(String.valueOf(change));
     }
 
     /* DecimalFormat df = new DecimalFormat("0.00");

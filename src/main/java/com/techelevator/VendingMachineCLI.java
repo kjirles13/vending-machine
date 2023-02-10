@@ -21,6 +21,7 @@ public class VendingMachineCLI {
     private static final String[] PURCHASE_MENU_OPTIONS = {PURCHASE_MENU_OPTION_FEED_MONEY, PURCHASE_MENU_OPTION_SELECT_PRODUCT, PURCHASE_MENU_OPTION_FINISH_TRANSACTION};
 
     private VendingMenu menu;
+    private VendingMachine vendingMachine = new VendingMachine();
 
     public VendingMachineCLI(VendingMenu menu) {
         this.menu = menu;
@@ -31,8 +32,9 @@ public class VendingMachineCLI {
         DecimalFormat df = new DecimalFormat("0.00");
         double totalMoneyIn = 0.0;
 
+
         // Create vending machine object and set inventory
-        VendingMachine vendingMachine = new VendingMachine();
+//        VendingMachine vendingMachine = new VendingMachine();
         TreeMap<String, Item> inventoryMap = null;
 
         try {
@@ -54,7 +56,7 @@ public class VendingMachineCLI {
 
                 if (purchaseChoice.equals(PURCHASE_MENU_OPTION_FEED_MONEY)) {
                     boolean runningFeedMoney = true;
-                    while(runningFeedMoney) {
+                    while (runningFeedMoney) {
                         System.out.println("\nCurrent Money Provided: $" + df.format(totalMoneyIn));
                         System.out.println("To exit Feed Money menu, enter '0'\n");
                         System.out.print("Feed Money here >>> ");
@@ -70,20 +72,28 @@ public class VendingMachineCLI {
                         }
                     }
                 } else if (purchaseChoice.equals(PURCHASE_MENU_OPTION_SELECT_PRODUCT)) {
-//                    switch (choice) {
-//                        case "1":
-//                            System.out.print("Please deposit money >>> " );
-//
-//
-//                            System.out.println(vendingMachine.countMoney());
-//                            break;
-//                        case "2":
-//                            displayInventory(inventoryMap);
-//                            break;
-//                        case "3":
-//
-//
-//                            break;
+                    //display items
+                    System.out.println();
+                    displayInventory(inventoryMap);
+                    System.out.println("\nYour total balance: $" + totalMoneyIn);
+                    System.out.print("\nChoose your item >>> ");
+                    //get input
+                    String userInput = menu.userInputScanner();
+                    if (!inventoryMap.containsKey(userInput)) {
+                        System.out.println("\nThat is not a valid item");
+                    } else if (inventoryMap.get(userInput).getInventoryCount() == 0) {
+                        System.out.println("\nOops. That item is SOLD OUT. Please try again!");
+                    } else if (totalMoneyIn < inventoryMap.get(userInput).getCost()) {
+                        System.out.println("\nSorry! Balance Too Low!");
+                    } else {
+                        totalMoneyIn = makePurchase(inventoryMap, totalMoneyIn, userInput);
+                        String phrase = inventoryMap.get(userInput).getPhrase();
+                        String name = inventoryMap.get(userInput).getName();
+                        double cost = inventoryMap.get(userInput).getCost();
+                        System.out.println(String.format("\n%s: %f \nNew balance: %f\n%s", name, cost, totalMoneyIn, phrase));
+                    }
+
+
 
                 } else if (choice.equals(PURCHASE_MENU_OPTION_FINISH_TRANSACTION)) {
                     //print out their item
@@ -111,4 +121,15 @@ public class VendingMachineCLI {
             System.out.println(String.format("%s : %s, $%s", item.getKey(), item.getValue().getName(), item.getValue().getCost()));
         }
     }
+
+    public double makePurchase(Map<String, Item> inventoryMap, double totalMoney, String mapKey) {
+        double totalCurrentAmount = 0;
+        Item item = inventoryMap.get(mapKey);
+        int inventoryCount = item.getInventoryCount();
+        totalCurrentAmount = vendingMachine.subtractFromTotal(totalMoney, item.getCost());
+        item.setInventoryCount(inventoryCount - 1);
+//        System.out.println(item.getPhrase());
+        return totalCurrentAmount;
+    }
 }
+

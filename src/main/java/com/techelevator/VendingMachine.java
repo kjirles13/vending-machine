@@ -11,11 +11,12 @@ import java.util.Scanner;
 import java.util.TreeMap;
 
 public class VendingMachine extends MoneyHandler {
+    private TreeMap<String, Item> itemMap = new TreeMap<>();
 
     public TreeMap<String, Item> updateInventoy() throws FileNotFoundException {
         File inputFile = new File("vendingmachine.csv");
         Scanner fileScanner = new Scanner(inputFile);
-        TreeMap<String, Item> itemMap = new TreeMap<>();
+
 
         while (fileScanner.hasNextLine()) {
             String scannerLine = fileScanner.nextLine();
