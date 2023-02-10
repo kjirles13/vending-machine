@@ -23,9 +23,6 @@ public abstract class MoneyHandler {
         return Double.parseDouble(String.valueOf(change));
     }
 
-    /* DecimalFormat df = new DecimalFormat("0.00");
-
-        return df.format(amount.multiply(conversionRate));*/
 
     public List<Integer> getChange(double total) {
         total *= 100;

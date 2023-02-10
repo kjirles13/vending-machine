@@ -10,8 +10,6 @@ import java.util.*;
 
 public class VendingMachineCLI {
 
-    private final DecimalFormat DF = new DecimalFormat("0.00");
-
     private static final String MAIN_MENU_OPTION_DISPLAY_ITEMS = "Display Vending Machine Items";
     private static final String MAIN_MENU_OPTION_PURCHASE = "Purchase";
     private static final String MAIN_MENU_OPTION_EXIT = "Exit";
@@ -31,10 +29,10 @@ public class VendingMachineCLI {
     }
 
     public void run() {
+        String spacer = "\n===============================";
         boolean running = true;
         double totalMoneyIn = 0.0;
         List<String> purchasedItemList = new ArrayList<>();
-
         TreeMap<String, Item> inventoryMap = null;
 
         try {
@@ -45,16 +43,17 @@ public class VendingMachineCLI {
         }
 
         while (running) {
+            System.out.println(spacer);
             String choice = (String) menu.getChoiceFromOptions(MAIN_MENU_OPTIONS);
-
-            // A switch statement could also be used here.  Your choice.
             if (choice.equals(MAIN_MENU_OPTION_DISPLAY_ITEMS)) {
+                System.out.println(spacer+"\n");
                 displayInventory(inventoryMap);
             } else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
                 boolean runningPurchaseMenu = true;
 
                 while (runningPurchaseMenu) {
-                System.out.println(String.format("\nCurrent balance: $%.2f",totalMoneyIn));
+                    System.out.println(spacer);
+                System.out.println(String.format("Current balance: $%.2f %s",totalMoneyIn,spacer));
 
                 String purchaseChoice = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
 
@@ -62,9 +61,9 @@ public class VendingMachineCLI {
                         boolean runningFeedMoney = true;
 
                         while (runningFeedMoney) {
-                            System.out.println(String.format("\nCurrent balance: $%.2f",totalMoneyIn));
-                            System.out.println("To exit Feed Money menu, enter '0'\n");
-                            System.out.print("Feed Money here >>> ");
+                            System.out.println(spacer);
+                            System.out.println(String.format("Current balance: $%.2f%s",totalMoneyIn, spacer));
+                            System.out.print("\nTo exit Feed Money menu, enter '0'\nFeed Money here >>> ");
 
                             String userInput = menu.userInputScanner();
 
@@ -75,8 +74,9 @@ public class VendingMachineCLI {
                             try {
                                 totalMoneyIn += Double.parseDouble(userInput);
                                 menu.feedMoney(totalMoneyIn);
+
                             } catch (NumberFormatException ex) {
-                                System.out.println("Oops that wasn't a number or '0'\nIf you want to leave this menu, enter '0'\nTry again:");
+                                System.out.println("\nOops that wasn't a number or '0'\nIf you want to leave this menu, enter '0'"+spacer);
                             }
                         }
                     } else if (purchaseChoice.equals(PURCHASE_MENU_OPTION_SELECT_PRODUCT)) {
@@ -84,19 +84,20 @@ public class VendingMachineCLI {
 
                         //display items
                         while (runningSelectProduct) {
-                            System.out.println();
+                            System.out.println(spacer+"\n");
                             displayInventory(inventoryMap);
-                            System.out.println("\nYour total balance: $" + totalMoneyIn);
+                            System.out.println(String.format("%s\nCurrent balance: $%.2f%s",spacer,totalMoneyIn, spacer));
                             System.out.print("\nChoose your item >>> ");
 
                             String userInput = menu.userInputScanner().toUpperCase();
 
                             if (!inventoryMap.containsKey(userInput)) {
-                                System.out.println("\nThat is not a valid item");
+                                System.out.println(spacer+"\n\nThat is not a valid item.");
                             } else if (inventoryMap.get(userInput).getInventoryCount() == 0) {
-                                System.out.println("\nOops. That item is SOLD OUT. Please try again!");
+                                System.out.println(spacer+"\nOops, that item is SOLD OUT! Please try again.");
                             } else if (totalMoneyIn < inventoryMap.get(userInput).getCost()) {
-                                System.out.println("\nSorry! Balance Too Low!");
+                                System.out.println(spacer+"\n\nSorry! Balance Too Low!");
+                                break;
                             } else {
                                 totalMoneyIn = makePurchase(inventoryMap, totalMoneyIn, userInput);
                                 String phrase = inventoryMap.get(userInput).getPhrase();
@@ -105,7 +106,7 @@ public class VendingMachineCLI {
 
                                 purchasedItemList.add(userInput);
 
-                                System.out.println(String.format("\n%s: $%.2f \nNew balance: $%.2f\n%s", name, cost, totalMoneyIn, phrase));
+                                System.out.println(String.format("%s\n%s: $%.2f\n%s\n%sCurrent balance: $%.2f%s", spacer, name, cost, phrase, spacer, totalMoneyIn, spacer));
                                 System.out.print("\nWould you like to purchase another item? (Y/N) >>> ");
 
                                 boolean yesNoSwitchCase = true;
@@ -195,7 +196,7 @@ public class VendingMachineCLI {
 
         item.setInventoryCount(inventoryCount - 1);
 
-        return Double.parseDouble(DF.format(totalCurrentAmount));
+        return Double.parseDouble(String.valueOf(totalCurrentAmount));
     }
 }
 
