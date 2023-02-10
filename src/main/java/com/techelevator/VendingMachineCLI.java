@@ -3,10 +3,6 @@ package com.techelevator;
 import com.techelevator.view.VendingMenu;
 
 import java.io.FileNotFoundException;
-import java.io.OutputStream;
-import java.math.BigDecimal;
-import java.sql.SQLOutput;
-import java.text.DecimalFormat;
 import java.util.*;
 
 public class VendingMachineCLI {
@@ -59,7 +55,7 @@ public class VendingMachineCLI {
         }
         System.out.println("======================================================");
         try {
-            Thread.sleep(500);
+            Thread.sleep(1000);
         } catch (InterruptedException ex) {
             ex.printStackTrace();
 
