@@ -49,81 +49,86 @@ public class VendingMachineCLI {
             if (choice.equals(MAIN_MENU_OPTION_DISPLAY_ITEMS)) {
                 displayInventory(inventoryMap);
             } else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
+                boolean runningPurchaseMenu = true;
+
+                while (runningPurchaseMenu) {
                 System.out.println("\nCurrent Money Provided: $" + DF.format(totalMoneyIn));
 
                 String purchaseChoice = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
 
-                if (purchaseChoice.equals(PURCHASE_MENU_OPTION_FEED_MONEY)) {
-                    boolean runningFeedMoney = true;
+                    if (purchaseChoice.equals(PURCHASE_MENU_OPTION_FEED_MONEY)) {
+                        boolean runningFeedMoney = true;
 
-                    while (runningFeedMoney) {
-                        System.out.println("\nCurrent Money Provided: $" + DF.format(totalMoneyIn));
-                        System.out.println("To exit Feed Money menu, enter '0'\n");
-                        System.out.print("Feed Money here >>> ");
+                        while (runningFeedMoney) {
+                            System.out.println("\nCurrent Money Provided: $" + DF.format(totalMoneyIn));
+                            System.out.println("To exit Feed Money menu, enter '0'\n");
+                            System.out.print("Feed Money here >>> ");
 
-                        String userInput = menu.userInputScanner();
+                            String userInput = menu.userInputScanner();
 
-                        if (userInput.equals("0")) {
-                            break;
+                            if (userInput.equals("0")) {
+                                runningFeedMoney = false;
+                            }
+
+                            try {
+                                totalMoneyIn += Double.parseDouble(userInput);
+                                menu.feedMoney(totalMoneyIn);
+                            } catch (NumberFormatException ex) {
+                                System.out.println("Oops that wasn't a number or '0'\nIf you want to leave this menu, enter '0'\nTry again:");
+                            }
                         }
-                        try {
-                            totalMoneyIn += Double.parseDouble(userInput);
-                            menu.feedMoney(totalMoneyIn);
-                        } catch (NumberFormatException ex) {
-                            System.out.println("Oops that wasn't a number or '0'\nIf you want to leave this menu, enter '0'\nTry again:");
-                        }
-                    }
-                } else if (purchaseChoice.equals(PURCHASE_MENU_OPTION_SELECT_PRODUCT)) {
-                    boolean runningSelectProduct = true;
+                    } else if (purchaseChoice.equals(PURCHASE_MENU_OPTION_SELECT_PRODUCT)) {
+                        boolean runningSelectProduct = true;
 
-                    //display items
-                    while (runningSelectProduct) {
-                        System.out.println();
-                        displayInventory(inventoryMap);
-                        System.out.println("\nYour total balance: $" + totalMoneyIn);
-                        System.out.print("\nChoose your item >>> ");
+                        //display items
+                        while (runningSelectProduct) {
+                            System.out.println();
+                            displayInventory(inventoryMap);
+                            System.out.println("\nYour total balance: $" + totalMoneyIn);
+                            System.out.print("\nChoose your item >>> ");
 
-                        //get input
-                        String userInput = menu.userInputScanner();
+                            String userInput = menu.userInputScanner();
 
-                        if (!inventoryMap.containsKey(userInput)) {
-                            System.out.println("\nThat is not a valid item");
-                        } else if (inventoryMap.get(userInput).getInventoryCount() == 0) {
-                            System.out.println("\nOops. That item is SOLD OUT. Please try again!");
-                        } else if (totalMoneyIn < inventoryMap.get(userInput).getCost()) {
-                            System.out.println("\nSorry! Balance Too Low!");
-                        } else {
-                            totalMoneyIn = makePurchase(inventoryMap, totalMoneyIn, userInput);
-                            String phrase = inventoryMap.get(userInput).getPhrase();
-                            String name = inventoryMap.get(userInput).getName();
-                            double cost = inventoryMap.get(userInput).getCost();
+                            if (!inventoryMap.containsKey(userInput)) {
+                                System.out.println("\nThat is not a valid item");
+                            } else if (inventoryMap.get(userInput).getInventoryCount() == 0) {
+                                System.out.println("\nOops. That item is SOLD OUT. Please try again!");
+                            } else if (totalMoneyIn < inventoryMap.get(userInput).getCost()) {
+                                System.out.println("\nSorry! Balance Too Low!");
+                            } else {
+                                totalMoneyIn = makePurchase(inventoryMap, totalMoneyIn, userInput);
+                                String phrase = inventoryMap.get(userInput).getPhrase();
+                                String name = inventoryMap.get(userInput).getName();
+                                double cost = inventoryMap.get(userInput).getCost();
 
-                            System.out.println(String.format("\n%s: $%.2f \nNew balance: $%.2f\n%s", name, cost, totalMoneyIn, phrase));
-                            System.out.print("\nWould you like to purchase another item? (Y/N) >>> ");
+                                System.out.println(String.format("\n%s: $%.2f \nNew balance: $%.2f\n%s", name, cost, totalMoneyIn, phrase));
+                                System.out.print("\nWould you like to purchase another item? (Y/N) >>> ");
 
-                            boolean yesNoSwitchCase = true;
-                            while (yesNoSwitchCase) {
-                                userInput = menu.userInputScanner();
-                                switch (userInput.toUpperCase()) {
-                                    case "Y":
-                                        yesNoSwitchCase = false;
-                                        break;
-                                    case "N":
-                                        runningSelectProduct = false;
-                                        yesNoSwitchCase = false;
-                                        break;
-                                    default:
-                                        System.out.print("\nOops. Not a valid input. Only use (Y/N).\nWould you like to purchase another item? (Y/N) >>> ");
-                                        break;
+                                boolean yesNoSwitchCase = true;
+                                while (yesNoSwitchCase) {
+                                    userInput = menu.userInputScanner();
+                                    switch (userInput.toUpperCase()) {
+                                        case "Y":
+                                            yesNoSwitchCase = false;
+                                            break;
+                                        case "N":
+                                            runningSelectProduct = false;
+                                            yesNoSwitchCase = false;
+                                            break;
+                                        default:
+                                            System.out.print("\nOops. Not a valid input. Only use (Y/N).\nWould you like to purchase another item? (Y/N) >>> ");
+                                            break;
+                                    }
                                 }
                             }
                         }
-                    }
 
-                } else if (choice.equals(PURCHASE_MENU_OPTION_FINISH_TRANSACTION)) {
-                    //print out their item
-                    //print out their new total
-                    //take them back to main menu
+                    } else if (choice.equals(PURCHASE_MENU_OPTION_FINISH_TRANSACTION)) {
+                        //print out their item
+                        //print out their new total
+                        //take them back to main menu
+                        runningPurchaseMenu = false;
+                    }
                 }
             } else if (choice.equals(MAIN_MENU_OPTION_EXIT)) {
                 List<Integer> moneyArrayList = new ArrayList<>(menu.getChange(totalMoneyIn));
