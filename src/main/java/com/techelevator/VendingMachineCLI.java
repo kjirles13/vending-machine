@@ -8,6 +8,8 @@ import java.util.*;
 
 public class VendingMachineCLI {
 
+    private final DecimalFormat DF = new DecimalFormat("0.00");
+
     private static final String MAIN_MENU_OPTION_DISPLAY_ITEMS = "Display Vending Machine Items";
     private static final String MAIN_MENU_OPTION_PURCHASE = "Purchase";
     private static final String MAIN_MENU_OPTION_EXIT = "Exit";
@@ -23,13 +25,13 @@ public class VendingMachineCLI {
     private VendingMenu menu;
     private VendingMachine vendingMachine = new VendingMachine();
 
+
     public VendingMachineCLI(VendingMenu menu) {
         this.menu = menu;
     }
 
     public void run() {
         boolean running = true;
-        DecimalFormat df = new DecimalFormat("0.00");
         double totalMoneyIn = 0.0;
 
 
@@ -51,13 +53,13 @@ public class VendingMachineCLI {
             if (choice.equals(MAIN_MENU_OPTION_DISPLAY_ITEMS)) {
                 displayInventory(inventoryMap);
             } else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
-                System.out.println("\nCurrent Money Provided: $" + df.format(totalMoneyIn));
+                System.out.println("\nCurrent Money Provided: $" + DF.format(totalMoneyIn));
                 String purchaseChoice = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
 
                 if (purchaseChoice.equals(PURCHASE_MENU_OPTION_FEED_MONEY)) {
                     boolean runningFeedMoney = true;
                     while (runningFeedMoney) {
-                        System.out.println("\nCurrent Money Provided: $" + df.format(totalMoneyIn));
+                        System.out.println("\nCurrent Money Provided: $" + DF.format(totalMoneyIn));
                         System.out.println("To exit Feed Money menu, enter '0'\n");
                         System.out.print("Feed Money here >>> ");
                         String userInput = menu.userInputScanner();
@@ -129,7 +131,7 @@ public class VendingMachineCLI {
         totalCurrentAmount = vendingMachine.subtractFromTotal(totalMoney, item.getCost());
         item.setInventoryCount(inventoryCount - 1);
 //        System.out.println(item.getPhrase());
-        return totalCurrentAmount;
+        return Double.parseDouble(DF.format(totalCurrentAmount));
     }
 }
 
