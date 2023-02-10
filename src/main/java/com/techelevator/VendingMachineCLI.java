@@ -92,7 +92,7 @@ public class VendingMachineCLI {
                         String phrase = inventoryMap.get(userInput).getPhrase();
                         String name = inventoryMap.get(userInput).getName();
                         double cost = inventoryMap.get(userInput).getCost();
-                        System.out.println(String.format("\n%s: %f \nNew balance: %f\n%s", name, cost, totalMoneyIn, phrase));
+                        System.out.println(String.format("\n%s: $%.2f \nNew balance: $%.2f\n%s", name, cost, totalMoneyIn, phrase));
                     }
 
 
