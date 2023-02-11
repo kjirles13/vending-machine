@@ -18,6 +18,11 @@ public class VendingMenu extends MoneyHandler {
         this.in = new Scanner(input);
     }
 
+    public String userInputScanner() {
+        String userInput = in.nextLine();
+        return userInput;
+    }
+
     public Object getChoiceFromOptions(Object[] options) {
         Object choice = null;
         while (choice == null) {
@@ -36,27 +41,11 @@ public class VendingMenu extends MoneyHandler {
                 choice = options[selectedOption - 1];
             }
         } catch (NumberFormatException e) {
-            // eat the exception, an error message will be displayed below since choice will be null
         }
         if (choice == null) {
             out.println(System.lineSeparator() + "*** " + userInput + " is not a valid option ***" + System.lineSeparator());
         }
         return choice;
-    }
-
-    public TreeMap<String, Item> updateInventoy() throws FileNotFoundException {
-        File inputFile = new File("vendingmachine.csv");
-        Scanner fileScanner = new Scanner(inputFile);
-
-
-        while (fileScanner.hasNextLine()) {
-            String scannerLine = fileScanner.nextLine();
-            String[] lineArray = scannerLine.split("\\|");
-            Item item = new Item(lineArray[1], Double.parseDouble(lineArray[2]), lineArray[3], 5);
-            itemMap.put(lineArray[0], item);
-        }
-        fileScanner.close();
-        return itemMap;
     }
 
     private void displayMenuOptions(Object[] options) {
@@ -69,8 +58,17 @@ public class VendingMenu extends MoneyHandler {
         out.flush();
     }
 
-    public String userInputScanner() {
-        String userInput = in.nextLine();
-        return userInput;
+    public TreeMap<String, Item> updateInventoy() throws FileNotFoundException {
+        File inputFile = new File("vendingmachine.csv");
+        Scanner fileScanner = new Scanner(inputFile);
+
+        while (fileScanner.hasNextLine()) {
+            String scannerLine = fileScanner.nextLine();
+            String[] lineArray = scannerLine.split("\\|");
+            Item item = new Item(lineArray[1], Double.parseDouble(lineArray[2]), lineArray[3], 5);
+            itemMap.put(lineArray[0], item);
+        }
+        fileScanner.close();
+        return itemMap;
     }
 }
