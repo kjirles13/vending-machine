@@ -4,6 +4,8 @@ import com.techelevator.Item;
 import com.techelevator.MoneyHandler;
 
 import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import java.util.TreeMap;
 
@@ -12,6 +14,7 @@ public class VendingMenu extends MoneyHandler {
     private PrintWriter out;
     private Scanner in;
     private TreeMap<String, Item> itemMap = new TreeMap<>();
+    private File logFile = new File("Log.txt");
 
     public VendingMenu(InputStream input, OutputStream output) {
         this.out = new PrintWriter(output);
@@ -70,5 +73,19 @@ public class VendingMenu extends MoneyHandler {
         }
         fileScanner.close();
         return itemMap;
+    }
+
+    public void writeToFile(String description, double originalAmountOrCost, double endingAmount) {
+        LocalDateTime localDateTime = LocalDateTime.now();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss a");
+        String formattedDate = localDateTime.format(dateTimeFormatter);
+        try (PrintWriter writer = new PrintWriter(new FileOutputStream(logFile, logFile.exists()))) {
+            if(!logFile.exists()){
+                logFile.createNewFile();
+            }
+            writer.println(String.format("%s %s $%.2f $%.2f", formattedDate, description, originalAmountOrCost, endingAmount));
+        } catch (IOException ex){
+            System.out.println(ex.getMessage());
+        }
     }
 }

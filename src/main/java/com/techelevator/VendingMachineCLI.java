@@ -93,6 +93,7 @@ public class VendingMachineCLI {
                             try {
                                 double moneyInserted = Double.parseDouble(userInput);
                                 totalMoneyIn = menu.addToTotal(totalMoneyIn, moneyInserted);
+                                menu.writeToFile("FEED MONEY:", moneyInserted, totalMoneyIn);
                             } catch (NumberFormatException ex) {
                                 System.out.println("\nOops that wasn't a number or '0'\nIf you want to leave this menu, enter '0'" + spacer);
                             }
@@ -121,6 +122,7 @@ public class VendingMachineCLI {
                                 String name = inventoryMap.get(userInput).getName();
                                 double cost = inventoryMap.get(userInput).getCost();
 
+                                menu.writeToFile(name + " " + userInput, cost, totalMoneyIn);
                                 purchasedItemList.add(userInput);
                                 System.out.println(String.format("\nDispensing %s...", inventoryMap.get(userInput).getName()));
                                 try {
@@ -185,6 +187,7 @@ public class VendingMachineCLI {
                                 moneyArrayList.get(3),
                                 totalMoneyIn
                         ));
+                        menu.writeToFile("GET CHANGE:", totalMoneyIn, 0.00);
                         totalMoneyIn = 0.00;
 
                         System.out.println(String.format("%s\nCurrent balance: $%.2f%s", spacer, totalMoneyIn, spacer));
