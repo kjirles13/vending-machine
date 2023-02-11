@@ -29,7 +29,8 @@ public abstract class MoneyHandler {
 
         try {
             for (int i = 0; i < changeList.size(); i++) {
-                int count = (int) convertedTotal.divide(changeConstants.get(i)).toBigInteger().intValue();;
+                int count = (int) convertedTotal.divide(changeConstants.get(i)).toBigInteger().intValue();
+
                 changeList.set(i, count);
                 convertedTotal = convertedTotal.remainder(changeConstants.get(i));
             }

@@ -35,6 +35,7 @@ public class Item {
 
     public String getPhrase() {
         String phrase = "";
+
         switch (getType()) {
             case "Chip":
                 phrase = "Crunch Crunch, It's Yummy!";

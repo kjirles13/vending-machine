@@ -62,10 +62,10 @@ public class VendingMenu extends MoneyHandler {
     }
 
     public double makePurchase(Map<String, Item> inventoryMap, BigDecimal totalMoney, String mapKey) {
-        double totalCurrentAmount = 0;
         Item item = inventoryMap.get(mapKey);
         int inventoryCount = item.getInventoryCount();
-        totalCurrentAmount = subtractFromTotal(totalMoney, BigDecimal.valueOf(item.getCost()));
+
+        double totalCurrentAmount = subtractFromTotal(totalMoney, BigDecimal.valueOf(item.getCost()));
 
         item.setInventoryCount(inventoryCount - 1);
 
@@ -79,10 +79,13 @@ public class VendingMenu extends MoneyHandler {
         while (fileScanner.hasNextLine()) {
             String scannerLine = fileScanner.nextLine();
             String[] lineArray = scannerLine.split("\\|");
+
             Item item = new Item(lineArray[1], Double.parseDouble(lineArray[2]), lineArray[3], 5);
+
             itemMap.put(lineArray[0], item);
         }
         fileScanner.close();
+
         return itemMap;
     }
 
@@ -92,22 +95,20 @@ public class VendingMenu extends MoneyHandler {
         String formattedDate = localDateTime.format(dateTimeFormatter);
 
         try (PrintWriter writer = new PrintWriter(new FileOutputStream(logFile, logFile.exists()))) {
-            if(!logFile.exists()){
+            if (!logFile.exists()) {
                 logFile.createNewFile();
             }
             writer.println(String.format("%s %s $%.2f $%.2f", formattedDate, description, originalAmountOrCost, endingAmount));
-        } catch (IOException ex){
+        } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
     }
 
     public List<String[]> calculateSalesReport(TreeMap<String, Item> inventoryMap) {
-        List<String[]> salesReport = new ArrayList<>(){};
-//        String[] codes = {"A1", "A2", "A3", "A4", "B1", "B2", "B3", "B4", "C1", "C2", "C3", "C4", "D1", "D2", "D3", "D4"};
-
+        List<String[]> salesReport = new ArrayList<>();
 
         try {
-            for (Map.Entry<String, Item> item: inventoryMap.entrySet()) {
+            for (Map.Entry<String, Item> item : inventoryMap.entrySet()) {
                 BigDecimal totalSales = BigDecimal.ZERO;
                 Scanner fileScanner = new Scanner(logFile);
                 int count = 0;
@@ -115,17 +116,20 @@ public class VendingMenu extends MoneyHandler {
 
                 while (fileScanner.hasNextLine()) {
                     String scannerLine = fileScanner.nextLine();
+
                     if (scannerLine.contains(item.getKey())) {
                         count += 1;
                         totalSales = totalSales.add(BigDecimal.valueOf(item.getValue().getCost()));
                     }
                 }
-                    itemArray[0] = item.getKey();
-                    itemArray[1] = String.valueOf(count);
-                    itemArray[2] = String.valueOf(totalSales);
-                    salesReport.add(itemArray);
-                    fileScanner.close();
-                }
+
+                itemArray[0] = item.getKey();
+                itemArray[1] = String.valueOf(count);
+                itemArray[2] = String.valueOf(totalSales);
+
+                salesReport.add(itemArray);
+                fileScanner.close();
+            }
         } catch (FileNotFoundException ex) {
             System.out.println("Unable to print sales report at this time.");
         }
