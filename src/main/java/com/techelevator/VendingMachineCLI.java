@@ -120,10 +120,13 @@ public class VendingMachineCLI {
 
                             try {
                                 BigDecimal moneyInserted = BigDecimal.valueOf(Double.parseDouble(userInput));
+                                if (moneyInserted.signum() < 0){
+                                    throw new NumberFormatException();
+                                }
                                 totalMoneyIn = menu.addToTotal(totalMoneyIn, moneyInserted);
                                 menu.writeToFile("FEED MONEY:", moneyInserted, totalMoneyIn);
                             } catch (NumberFormatException ex) {
-                                System.out.println("\nOops that wasn't a number or '0'\nIf you want to leave this menu, enter '0'" + spacer);
+                                System.out.println(String.format("%s\n\nOops that wasn't a valid number or '0'\nIf you want to leave this menu, enter '0'\n%s", spacer, spacer));
                             }
                         }
                     } else if (purchaseChoice.equals(PURCHASE_MENU_OPTION_SELECT_PRODUCT)) {
@@ -141,8 +144,8 @@ public class VendingMachineCLI {
                                 System.out.println(spacer + "\n\nThat is not a valid item.");
                             } else if (inventoryMap.get(userInput).getInventoryCount() == 0) {
                                 System.out.println(spacer + "\n\nOops, that item is SOLD OUT! Please try again.");
-                            } else if (totalMoneyIn.compareTo(BigDecimal.valueOf(inventoryMap.get(userInput).getCost())) == 1) {
-                                System.out.println(spacer + "\n\nSorry! Balance Too Low!");
+                            } else if (totalMoneyIn.compareTo(BigDecimal.valueOf(inventoryMap.get(userInput).getCost())) <= 0) {
+                                System.out.println(spacer + "\n\nSorry! Balance Too Low! Try again.");
                                 break;
                             } else {
                                 totalMoneyIn = BigDecimal.valueOf(menu.makePurchase(inventoryMap, totalMoneyIn, userInput));
@@ -243,7 +246,7 @@ public class VendingMachineCLI {
                 int pin = (int) Integer.parseInt(menu.userInputScanner());
 
                 if (pin == AUTHORIZATION_CODE) {
-                    List<String[]> salesReport = new ArrayList<>(menu.calculateSalesReport());
+                    List<String[]> salesReport = new ArrayList<>(menu.calculateSalesReport(inventoryMap));
                     printSalesReport(salesReport);
                 }
 
@@ -277,11 +280,14 @@ public class VendingMachineCLI {
     }
 
     private void printSalesReport(List<String[]> salesReport) {
+        BigDecimal total = BigDecimal.ZERO;
         System.out.println();
 
         for (String[] line : salesReport) {
+            total = total.add(BigDecimal.valueOf(Double.parseDouble(line[2])));
             System.out.println(String.format("%s|%s", inventoryMap.get(line[0]).getName(), line[1]));
         }
+        System.out.println(String.format("\n Total Sales: $%.2f", total));
     }
 }
 

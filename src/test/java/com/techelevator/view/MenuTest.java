@@ -87,6 +87,7 @@ public class MenuTest {
 		Assert.assertEquals(expected, output.toString());
 	}
 
+
 	private VendingMenu getMenuForTestingWithUserInput(String userInput) {
 		ByteArrayInputStream input = new ByteArrayInputStream(String.valueOf(userInput).getBytes());
 		return new VendingMenu(input, output);
@@ -95,4 +96,5 @@ public class MenuTest {
 	private VendingMenu getMenuForTesting() {
 		return getMenuForTestingWithUserInput("1" + System.lineSeparator());
 	}
+
 }

@@ -101,25 +101,28 @@ public class VendingMenu extends MoneyHandler {
         }
     }
 
-    public List<String[]> calculateSalesReport() {
+    public List<String[]> calculateSalesReport(TreeMap<String, Item> inventoryMap) {
         List<String[]> salesReport = new ArrayList<>(){};
-        String[] codes = {"A1", "A2", "A3", "A4", "B1", "B2", "B3", "B4", "C1", "C2", "C3", "C4", "D1", "D2", "D3", "D4"};
+//        String[] codes = {"A1", "A2", "A3", "A4", "B1", "B2", "B3", "B4", "C1", "C2", "C3", "C4", "D1", "D2", "D3", "D4"};
 
 
         try {
-            for (int i = 0; i < codes.length; i++) {
+            for (Map.Entry<String, Item> item: inventoryMap.entrySet()) {
+                BigDecimal totalSales = BigDecimal.ZERO;
                 Scanner fileScanner = new Scanner(logFile);
                 int count = 0;
-                String[] itemArray = new String[2];
+                String[] itemArray = new String[3];
 
                 while (fileScanner.hasNextLine()) {
                     String scannerLine = fileScanner.nextLine();
-                    if (scannerLine.contains(codes[i])) {
+                    if (scannerLine.contains(item.getKey())) {
                         count += 1;
+                        totalSales = totalSales.add(BigDecimal.valueOf(item.getValue().getCost()));
                     }
                 }
-                    itemArray[0] = codes[i];
+                    itemArray[0] = item.getKey();
                     itemArray[1] = String.valueOf(count);
+                    itemArray[2] = String.valueOf(totalSales);
                     salesReport.add(itemArray);
                     fileScanner.close();
                 }
