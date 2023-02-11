@@ -6,6 +6,7 @@ import com.techelevator.MoneyHandler;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeMap;
 
@@ -53,12 +54,23 @@ public class VendingMenu extends MoneyHandler {
 
     private void displayMenuOptions(Object[] options) {
         out.println();
-        for (int i = 0; i < options.length; i++) {
+        for (int i = 0; i < options.length - 1; i++) {
             int optionNum = i + 1;
             out.println(optionNum + ") " + options[i]);
         }
         out.print(System.lineSeparator() + "Please choose an option >>> ");
         out.flush();
+    }
+
+    public double makePurchase(Map<String, Item> inventoryMap, double totalMoney, String mapKey) {
+        double totalCurrentAmount = 0;
+        Item item = inventoryMap.get(mapKey);
+        int inventoryCount = item.getInventoryCount();
+        totalCurrentAmount = subtractFromTotal(totalMoney, item.getCost());
+
+        item.setInventoryCount(inventoryCount - 1);
+
+        return Double.parseDouble(String.valueOf(totalCurrentAmount));
     }
 
     public TreeMap<String, Item> updateInventoy() throws FileNotFoundException {

@@ -19,6 +19,7 @@ public class VendingMachineCLI {
     private static final String[] MAIN_MENU_OPTIONS = {MAIN_MENU_OPTION_DISPLAY_ITEMS, MAIN_MENU_OPTION_PURCHASE, MAIN_MENU_OPTION_EXIT, MAIN_MENU_SECRET_OPTION};
     private static final String[] PURCHASE_MENU_OPTIONS = {PURCHASE_MENU_OPTION_FEED_MONEY, PURCHASE_MENU_OPTION_SELECT_PRODUCT, PURCHASE_MENU_OPTION_FINISH_TRANSACTION};
 
+    private final int AUTHORIZATION_CODE = 1234;
     private String spacer = "\n========================================";
     private VendingMenu menu;
 
@@ -117,7 +118,7 @@ public class VendingMachineCLI {
                                 System.out.println(spacer + "\n\nSorry! Balance Too Low!");
                                 break;
                             } else {
-                                totalMoneyIn = makePurchase(inventoryMap, totalMoneyIn, userInput);
+                                totalMoneyIn = menu.makePurchase(inventoryMap, totalMoneyIn, userInput);
                                 String phrase = inventoryMap.get(userInput).getPhrase();
                                 String name = inventoryMap.get(userInput).getName();
                                 double cost = inventoryMap.get(userInput).getCost();
@@ -210,6 +211,15 @@ public class VendingMachineCLI {
                 System.out.println(String.format("%s\nThank you for using the Vending Machine!%s", spacer, spacer));
 
                 running = false;
+            } else if (choice.equals(MAIN_MENU_SECRET_OPTION)) {
+                System.out.print("Please enter your pin >>> ");
+                int pin = (int) Integer.parseInt(menu.userInputScanner());
+
+                if (pin == AUTHORIZATION_CODE) {
+                    printSalesReport();
+                }
+
+                System.out.println("\nPress any key to exit this menu >>>");
             }
         }
     }
@@ -237,15 +247,8 @@ public class VendingMachineCLI {
         }
     }
 
-    public double makePurchase(Map<String, Item> inventoryMap, double totalMoney, String mapKey) {
-        double totalCurrentAmount = 0;
-        Item item = inventoryMap.get(mapKey);
-        int inventoryCount = item.getInventoryCount();
-        totalCurrentAmount = menu.subtractFromTotal(totalMoney, item.getCost());
-
-        item.setInventoryCount(inventoryCount - 1);
-
-        return Double.parseDouble(String.valueOf(totalCurrentAmount));
+    private void printSalesReport() {
     }
+
 }
 
