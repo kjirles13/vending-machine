@@ -4,6 +4,7 @@ import com.techelevator.Item;
 import com.techelevator.MoneyHandler;
 
 import java.io.*;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -60,11 +61,11 @@ public class VendingMenu extends MoneyHandler {
         out.flush();
     }
 
-    public double makePurchase(Map<String, Item> inventoryMap, double totalMoney, String mapKey) {
+    public double makePurchase(Map<String, Item> inventoryMap, BigDecimal totalMoney, String mapKey) {
         double totalCurrentAmount = 0;
         Item item = inventoryMap.get(mapKey);
         int inventoryCount = item.getInventoryCount();
-        totalCurrentAmount = subtractFromTotal(totalMoney, item.getCost());
+        totalCurrentAmount = subtractFromTotal(totalMoney, BigDecimal.valueOf(item.getCost()));
 
         item.setInventoryCount(inventoryCount - 1);
 
@@ -85,7 +86,7 @@ public class VendingMenu extends MoneyHandler {
         return itemMap;
     }
 
-    public void writeToFile(String description, double originalAmountOrCost, double endingAmount) {
+    public void writeToFile(String description, BigDecimal originalAmountOrCost, BigDecimal endingAmount) {
         LocalDateTime localDateTime = LocalDateTime.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss a");
         String formattedDate = localDateTime.format(dateTimeFormatter);
@@ -104,9 +105,10 @@ public class VendingMenu extends MoneyHandler {
         List<String[]> salesReport = new ArrayList<>(){};
         String[] codes = {"A1", "A2", "A3", "A4", "B1", "B2", "B3", "B4", "C1", "C2", "C3", "C4", "D1", "D2", "D3", "D4"};
 
-        try (Scanner fileScanner = new Scanner(logFile)){
 
+        try {
             for (int i = 0; i < codes.length; i++) {
+                Scanner fileScanner = new Scanner(logFile);
                 int count = 0;
                 String[] itemArray = new String[2];
 
@@ -115,12 +117,12 @@ public class VendingMenu extends MoneyHandler {
                     if (scannerLine.contains(codes[i])) {
                         count += 1;
                     }
-
+                }
                     itemArray[0] = codes[i];
                     itemArray[1] = String.valueOf(count);
                     salesReport.add(itemArray);
+                    fileScanner.close();
                 }
-            }
         } catch (FileNotFoundException ex) {
             System.out.println("Unable to print sales report at this time.");
         }

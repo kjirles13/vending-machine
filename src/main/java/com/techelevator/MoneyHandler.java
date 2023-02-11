@@ -6,35 +6,35 @@ import java.util.Arrays;
 import java.util.List;
 
 public abstract class MoneyHandler {
-    private final int NICKEL = 5;
-    private final int DIME = 10;
-    private final int QUARTER = 25;
-    private final int DOLLAR = 100;
+    private final BigDecimal NICKEL = BigDecimal.valueOf(5);
+    private final BigDecimal DIME = BigDecimal.valueOf(10);
+    private final BigDecimal QUARTER = BigDecimal.valueOf(25);
+    private final BigDecimal DOLLAR = BigDecimal.valueOf(100);
 
-    public double subtractFromTotal(double total, double costOfItem) {
-        BigDecimal change = BigDecimal.valueOf(total).subtract(BigDecimal.valueOf(costOfItem));
+    public double subtractFromTotal(BigDecimal total, BigDecimal costOfItem) {
+        BigDecimal change = total.subtract(costOfItem);
         return Double.parseDouble(String.valueOf(change));
     }
 
-    public double addToTotal(double totalMoneyIn, double userInput) {
-        BigDecimal newTotal = BigDecimal.valueOf(totalMoneyIn).add(BigDecimal.valueOf(userInput));
-        return Double.parseDouble(String.valueOf(newTotal));
+    public BigDecimal addToTotal(BigDecimal totalMoneyIn, BigDecimal userInput) {
+        BigDecimal newTotal = totalMoneyIn.add(userInput);
+        return newTotal;
     }
 
-    public List<Integer> getChange(double total) {
-        total *= 100;
+    public List<Integer> getChange(BigDecimal total) {
+        BigDecimal convertedTotal = total.multiply(BigDecimal.valueOf(100.0));
         int dollarCount = 0, quarterCount = 0, dimeCount = 0, nickelCount = 0;
-        List<Integer> changeConstants = new ArrayList<>(Arrays.asList(DOLLAR, QUARTER, DIME, NICKEL));
+        List<BigDecimal> changeConstants = new ArrayList<>(Arrays.asList(DOLLAR, QUARTER, DIME, NICKEL));
         List<Integer> changeList = new ArrayList<>(Arrays.asList(dollarCount, quarterCount, dimeCount, nickelCount));
 
         try {
             for (int i = 0; i < changeList.size(); i++) {
-                int count = (int) (total / changeConstants.get(i));
+                int count = (int) convertedTotal.divide(changeConstants.get(i)).toBigInteger().intValue();;
                 changeList.set(i, count);
-                total %= changeConstants.get(i);
-
+                convertedTotal = convertedTotal.remainder(changeConstants.get(i));
             }
         } catch (ArithmeticException ex) {
+            System.out.println("Error with getChange");
             return changeList;
         }
         return changeList;

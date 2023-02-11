@@ -3,6 +3,7 @@ package com.techelevator;
 import com.techelevator.view.VendingMenu;
 
 import java.io.FileNotFoundException;
+import java.math.BigDecimal;
 import java.util.*;
 
 public class VendingMachineCLI {
@@ -30,7 +31,7 @@ public class VendingMachineCLI {
 
     public void run() {
         boolean running = true;
-        double totalMoneyIn = 0.0;
+        BigDecimal totalMoneyIn = BigDecimal.ZERO;
         List<String> purchasedItemList = new ArrayList<>();
 //        TreeMap<String, Item> inventoryMap = null;
 
@@ -40,35 +41,29 @@ public class VendingMachineCLI {
             System.out.println("Inventory file not found. Cannot start Vending Machine.");
             running = false;
         }
-
-        System.out.println("\n======================================================");
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException ex) {
-            ex.printStackTrace();
-
-        }
+        System.out.println();
+        System.out.println();
         System.out.println("_____________________________________________________________________");
         System.out.println("|     *  Welcome to Aaron's and Kit's Vending Machine!  *           |");
         System.out.println("|   __________________________________________________              |");
         System.out.println("|   |                                                 |             |");
         System.out.println("|   |   ________   __________  ________  _________    |             |");
-        System.out.println("|   |  | Potato | |==========| |~Grain~| |Cloud  |    |             |");
+        System.out.println("|   |  | Potato | |==========| |~Grain~| | Cloud |    |             |");
         System.out.println("|   |  | Crisps | |=Stackers=| |~Waves~| |Popcorn|    |             |");
         System.out.println("|   |  |++++++++| |==========| |~~~~~~~| |       |    |             |");
         System.out.println("|   |  |________| |__________| |_______| |_______|    |             |");
         System.out.println("|   |                                                 |             |");
         System.out.println("|   |  _________   _________   ________  _________    |             |");
-        System.out.println("|   |  | Moon   |  |Cowtails|  | Wonka | |Crunchie|   |             |");
+        System.out.println("|   |  |  Moon  |  |Cowtails|  | Wonka | |Crunchie|   |             |");
         System.out.println("|   |  |__Pie___|  |________|  |__Bar__| |________|   |             |");
         System.out.println("|   |                                                 |             |");
         System.out.println("|   |  _________   _________   _________  _________   |             |");
-        System.out.println("|   |  | Cola   |  |Dr.Salt |  | Mtn    | |HEAVY   |  |             |");
+        System.out.println("|   |  | Cola   |  |Dr.Salt |  | Mtn    | | HEAVY  |  |             |");
         System.out.println("|   |  |________|  |________|  |_Melter_| |________|  |  _______    |");
         System.out.println("|   |                                                 |  |Hello!|   |");
-        System.out.println("|   |   ________   __________  ________  _________    |   ______    |");
+        System.out.println("|   |   ________  __________   ________  _________    |   ______    |");
         System.out.println("|   |  |   U    | | Little |  |Chiclets| |Triple |    |   |A B |    |");
-        System.out.println("|   |  | Chews  | |=League=|  |~Waves~ | | Mint  |    |   |C D |    |");
+        System.out.println("|   |  | Chews  | |=League=|  |        | | Mint  |    |   |C D |    |");
         System.out.println("|   |  |________| |  Chews |  |________| |_______|    |   |1 2 |    |");
         System.out.println("|   |             |________|                          |   |3 4 |    |");
         System.out.println("|   |                                                 |   |5 6 |    |");
@@ -85,19 +80,14 @@ public class VendingMachineCLI {
         System.out.println("|                                                                   |");
         System.out.println("|                                                                   |");
         System.out.println("|___________________________________________________________________|");
+
         try {
-            Thread.sleep(1500);
+            Thread.sleep(2000);
         } catch (InterruptedException ex) {
             ex.printStackTrace();
 
         }
-        System.out.println("======================================================");
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException ex) {
-            ex.printStackTrace();
 
-        }
         while (running) {
             System.out.println(spacer);
             String choice = (String) menu.getChoiceFromOptions(MAIN_MENU_OPTIONS);
@@ -129,7 +119,7 @@ public class VendingMachineCLI {
                             }
 
                             try {
-                                double moneyInserted = Double.parseDouble(userInput);
+                                BigDecimal moneyInserted = BigDecimal.valueOf(Double.parseDouble(userInput));
                                 totalMoneyIn = menu.addToTotal(totalMoneyIn, moneyInserted);
                                 menu.writeToFile("FEED MONEY:", moneyInserted, totalMoneyIn);
                             } catch (NumberFormatException ex) {
@@ -151,14 +141,14 @@ public class VendingMachineCLI {
                                 System.out.println(spacer + "\n\nThat is not a valid item.");
                             } else if (inventoryMap.get(userInput).getInventoryCount() == 0) {
                                 System.out.println(spacer + "\n\nOops, that item is SOLD OUT! Please try again.");
-                            } else if (totalMoneyIn < inventoryMap.get(userInput).getCost()) {
+                            } else if (totalMoneyIn.compareTo(BigDecimal.valueOf(inventoryMap.get(userInput).getCost())) == 1) {
                                 System.out.println(spacer + "\n\nSorry! Balance Too Low!");
                                 break;
                             } else {
-                                totalMoneyIn = menu.makePurchase(inventoryMap, totalMoneyIn, userInput);
+                                totalMoneyIn = BigDecimal.valueOf(menu.makePurchase(inventoryMap, totalMoneyIn, userInput));
                                 String phrase = inventoryMap.get(userInput).getPhrase();
                                 String name = inventoryMap.get(userInput).getName();
-                                double cost = inventoryMap.get(userInput).getCost();
+                                BigDecimal cost = BigDecimal.valueOf(inventoryMap.get(userInput).getCost());
 
                                 menu.writeToFile(name + " " + userInput, cost, totalMoneyIn);
                                 purchasedItemList.add(userInput);
@@ -216,7 +206,7 @@ public class VendingMachineCLI {
                         }
                     } else if (purchaseChoice.equals(PURCHASE_MENU_OPTION_FINISH_TRANSACTION)) {
                         List<Integer> moneyArrayList = new ArrayList<>(menu.getChange(totalMoneyIn));
-                        displayPurchasedItems(purchasedItemList, inventoryMap, totalMoneyIn);
+                        displayPurchasedItems(purchasedItemList, inventoryMap);
                         System.out.println(String.format("%s\n\nHere's your change:\n\nDollars: %s\nQuarters: %s\nDimes: %s\nNickels: %s\n\tTotal: $%.2f",
                                 spacer,
                                 moneyArrayList.get(0),
@@ -225,8 +215,8 @@ public class VendingMachineCLI {
                                 moneyArrayList.get(3),
                                 totalMoneyIn
                         ));
-                        menu.writeToFile("GET CHANGE:", totalMoneyIn, 0.00);
-                        totalMoneyIn = 0.00;
+                        menu.writeToFile("GET CHANGE:", totalMoneyIn, BigDecimal.ZERO);
+                        totalMoneyIn = BigDecimal.ZERO;
 
                         System.out.println(String.format("%s\nCurrent balance: $%.2f%s", spacer, totalMoneyIn, spacer));
 
@@ -245,7 +235,7 @@ public class VendingMachineCLI {
                         totalMoneyIn
                 ));
 
-                System.out.println(String.format("%s\nThank you for using the Vending Machine!%s", spacer, spacer));
+                System.out.println(String.format("%s\nThank you for using our Vending Machine!%s", spacer, spacer));
 
                 running = false;
             } else if (choice.equals(MAIN_MENU_SECRET_OPTION)) {
@@ -269,7 +259,7 @@ public class VendingMachineCLI {
         cli.run();
     }
 
-    public void displayPurchasedItems(List<String> purchsaedItems, Map<String, Item> inventoryMap, double total) {
+    public void displayPurchasedItems(List<String> purchsaedItems, Map<String, Item> inventoryMap) {
         System.out.println(String.format("%s\n\nHere are the item(s) you purchased:\n", spacer));
 
         for (String item : purchsaedItems) {
@@ -293,6 +283,5 @@ public class VendingMachineCLI {
             System.out.println(String.format("%s|%s", inventoryMap.get(line[0]).getName(), line[1]));
         }
     }
-
 }
 
