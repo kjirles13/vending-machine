@@ -16,12 +16,13 @@ public class VendingMachineCLI {
     private static final String PURCHASE_MENU_OPTION_SELECT_PRODUCT = "Select Product";
     private static final String PURCHASE_MENU_OPTION_FINISH_TRANSACTION = "Finish Transaction";
 
-    private static final String[] MAIN_MENU_OPTIONS = {MAIN_MENU_OPTION_DISPLAY_ITEMS, MAIN_MENU_OPTION_PURCHASE, MAIN_MENU_OPTION_EXIT, MAIN_MENU_SECRET_OPTION};
+    private static final String[] MAIN_MENU_OPTIONS = {MAIN_MENU_OPTION_DISPLAY_ITEMS, MAIN_MENU_OPTION_PURCHASE, MAIN_MENU_OPTION_EXIT,  MAIN_MENU_SECRET_OPTION};
     private static final String[] PURCHASE_MENU_OPTIONS = {PURCHASE_MENU_OPTION_FEED_MONEY, PURCHASE_MENU_OPTION_SELECT_PRODUCT, PURCHASE_MENU_OPTION_FINISH_TRANSACTION};
 
     private final int AUTHORIZATION_CODE = 1234;
     private String spacer = "\n========================================";
     private VendingMenu menu;
+    TreeMap<String, Item> inventoryMap = null;
 
     public VendingMachineCLI(VendingMenu menu) {
         this.menu = menu;
@@ -31,7 +32,7 @@ public class VendingMachineCLI {
         boolean running = true;
         double totalMoneyIn = 0.0;
         List<String> purchasedItemList = new ArrayList<>();
-        TreeMap<String, Item> inventoryMap = null;
+//        TreeMap<String, Item> inventoryMap = null;
 
         try {
             inventoryMap = new TreeMap<>(menu.updateInventoy());
@@ -212,14 +213,16 @@ public class VendingMachineCLI {
 
                 running = false;
             } else if (choice.equals(MAIN_MENU_SECRET_OPTION)) {
-                System.out.print("Please enter your pin >>> ");
+                System.out.print("\nPlease enter your pin >>> ");
                 int pin = (int) Integer.parseInt(menu.userInputScanner());
 
                 if (pin == AUTHORIZATION_CODE) {
-                    printSalesReport();
+                    List<String[]> salesReport = new ArrayList<>(menu.calculateSalesReport());
+                    printSalesReport(salesReport);
                 }
 
-                System.out.println("\nPress any key to exit this menu >>>");
+                System.out.print("\nPress any key to exit this menu >>> ");
+                menu.userInputScanner();
             }
         }
     }
@@ -247,7 +250,12 @@ public class VendingMachineCLI {
         }
     }
 
-    private void printSalesReport() {
+    private void printSalesReport(List<String[]> salesReport) {
+        System.out.println();
+
+        for (String[] line : salesReport) {
+            System.out.println(String.format("%s|%s", inventoryMap.get(line[0]).getName(), line[1]));
+        }
     }
 
 }

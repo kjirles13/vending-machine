@@ -6,9 +6,7 @@ import com.techelevator.MoneyHandler;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.TreeMap;
+import java.util.*;
 
 public class VendingMenu extends MoneyHandler {
 
@@ -54,7 +52,7 @@ public class VendingMenu extends MoneyHandler {
 
     private void displayMenuOptions(Object[] options) {
         out.println();
-        for (int i = 0; i < options.length - 1; i++) {
+        for (int i = 0; i < 3; i++) {
             int optionNum = i + 1;
             out.println(optionNum + ") " + options[i]);
         }
@@ -91,6 +89,7 @@ public class VendingMenu extends MoneyHandler {
         LocalDateTime localDateTime = LocalDateTime.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss a");
         String formattedDate = localDateTime.format(dateTimeFormatter);
+
         try (PrintWriter writer = new PrintWriter(new FileOutputStream(logFile, logFile.exists()))) {
             if(!logFile.exists()){
                 logFile.createNewFile();
@@ -99,5 +98,32 @@ public class VendingMenu extends MoneyHandler {
         } catch (IOException ex){
             System.out.println(ex.getMessage());
         }
+    }
+
+    public List<String[]> calculateSalesReport() {
+        List<String[]> salesReport = new ArrayList<>(){};
+        String[] codes = {"A1", "A2", "A3", "A4", "B1", "B2", "B3", "B4", "C1", "C2", "C3", "C4", "D1", "D2", "D3", "D4"};
+
+        try (Scanner fileScanner = new Scanner(logFile)){
+
+            for (int i = 0; i < codes.length; i++) {
+                int count = 0;
+                String[] itemArray = new String[2];
+
+                while (fileScanner.hasNextLine()) {
+                    String scannerLine = fileScanner.nextLine();
+                    if (scannerLine.contains(codes[i])) {
+                        count += 1;
+                    }
+
+                    itemArray[0] = codes[i];
+                    itemArray[1] = String.valueOf(count);
+                    salesReport.add(itemArray);
+                }
+            }
+        } catch (FileNotFoundException ex) {
+            System.out.println("Unable to print sales report at this time.");
+        }
+        return salesReport;
     }
 }
