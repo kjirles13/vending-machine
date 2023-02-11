@@ -48,9 +48,45 @@ public class VendingMachineCLI {
             ex.printStackTrace();
 
         }
-        System.out.println(" *  Welcome to Aaron's and Kit's Vending Machine!  *");
+        System.out.println("_____________________________________________________________________");
+        System.out.println("|     *  Welcome to Aaron's and Kit's Vending Machine!  *           |");
+        System.out.println("|   __________________________________________________              |");
+        System.out.println("|   |                                                 |             |");
+        System.out.println("|   |   ________   __________  ________  _________    |             |");
+        System.out.println("|   |  | Potato | |==========| |~Grain~| |Cloud  |    |             |");
+        System.out.println("|   |  | Crisps | |=Stackers=| |~Waves~| |Popcorn|    |             |");
+        System.out.println("|   |  |++++++++| |==========| |~~~~~~~| |       |    |             |");
+        System.out.println("|   |  |________| |__________| |_______| |_______|    |             |");
+        System.out.println("|   |                                                 |             |");
+        System.out.println("|   |  _________   _________   ________  _________    |             |");
+        System.out.println("|   |  | Moon   |  |Cowtails|  | Wonka | |Crunchie|   |             |");
+        System.out.println("|   |  |__Pie___|  |________|  |__Bar__| |________|   |             |");
+        System.out.println("|   |                                                 |             |");
+        System.out.println("|   |  _________   _________   _________  _________   |             |");
+        System.out.println("|   |  | Cola   |  |Dr.Salt |  | Mtn    | |HEAVY   |  |             |");
+        System.out.println("|   |  |________|  |________|  |_Melter_| |________|  |  _______    |");
+        System.out.println("|   |                                                 |  |Hello!|   |");
+        System.out.println("|   |   ________   __________  ________  _________    |   ______    |");
+        System.out.println("|   |  |   U    | | Little |  |Chiclets| |Triple |    |   |A B |    |");
+        System.out.println("|   |  | Chews  | |=League=|  |~Waves~ | | Mint  |    |   |C D |    |");
+        System.out.println("|   |  |________| |  Chews |  |________| |_______|    |   |1 2 |    |");
+        System.out.println("|   |             |________|                          |   |3 4 |    |");
+        System.out.println("|   |                                                 |   |5 6 |    |");
+        System.out.println("|   |                                                 |   |7 8 |    |");
+        System.out.println("|   |                                                 |   |9 0 |    |");
+        System.out.println("|   |_________________________________________________|   |____|    |");
+        System.out.println("|                                                                   |");
+        System.out.println("|                                                                   |");
+        System.out.println("|        ________________________________________                   |");
+        System.out.println("|        |                                      |                   |");
+        System.out.println("|        |                PUSH                  |                   |");
+        System.out.println("|        |______________________________________|                   |");
+        System.out.println("|                                                                   |");
+        System.out.println("|                                                                   |");
+        System.out.println("|                                                                   |");
+        System.out.println("|___________________________________________________________________|");
         try {
-            Thread.sleep(500);
+            Thread.sleep(1500);
         } catch (InterruptedException ex) {
             ex.printStackTrace();
 
