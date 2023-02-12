@@ -91,32 +91,48 @@ public class MenuTest {
 		Assert.assertEquals(expected, output.toString());
 	}
 
+	
+
 	//Testing Money Handler class (Abstract)
 	@Test
 	public void getChange_Should_Return_Accurate_AmountsOf_MoneyDenomination_Back(){
 		VendingMenu menu = getMenuForTesting();
+
 		BigDecimal total = BigDecimal.valueOf(10.90);
 		List actualOutcome = menu.getChange(total);
 		List<Integer> expectedOutcome = new ArrayList<Integer>(Arrays.asList(10, 3, 1, 1));
+
 		Assert.assertEquals(actualOutcome, expectedOutcome);
 
+		total = BigDecimal.ZERO;
+		actualOutcome = menu.getChange(total);
+		expectedOutcome = new ArrayList<Integer>(Arrays.asList(0, 0, 0, 0));
+
+		Assert.assertEquals(actualOutcome, expectedOutcome);
 	}
+
 	@Test
 	public void subTractFromTotal_Should_Subtract_CostofItem_From_Total(){
 		VendingMenu menu = getMenuForTesting();
+
 		BigDecimal total = BigDecimal.valueOf(100);
 		BigDecimal costOfItem = BigDecimal.valueOf(3.05);
 		BigDecimal actualOutput = BigDecimal.valueOf(menu.subtractFromTotal(total, costOfItem));
 		BigDecimal expectedOutput = BigDecimal.valueOf(96.95);
+
 		Assert.assertEquals(actualOutput, expectedOutput);
 	}
+
 	@Test
 	public void addToTotal_Should_Add_totalMoneyIn_And_userInput(){
 		VendingMenu menu = getMenuForTesting();
+
 		BigDecimal totalMoneyIn = BigDecimal.valueOf(10);
 		BigDecimal userInput = BigDecimal.valueOf(5);
 		BigDecimal actualOutput = menu.addToTotal(totalMoneyIn, userInput);
 		BigDecimal expectedOutput = BigDecimal.valueOf(15);
+
+		Assert.assertEquals(actualOutput, expectedOutput);
 	}
 
 	private VendingMenu getMenuForTestingWithUserInput(String userInput) {
