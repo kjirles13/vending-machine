@@ -2,6 +2,10 @@ package com.techelevator.view;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -87,6 +91,33 @@ public class MenuTest {
 		Assert.assertEquals(expected, output.toString());
 	}
 
+	//Testing Money Handler class (Abstract)
+	@Test
+	public void getChange_Should_Return_Accurate_AmountsOf_MoneyDenomination_Back(){
+		VendingMenu menu = getMenuForTesting();
+		BigDecimal total = BigDecimal.valueOf(10.90);
+		List actualOutcome = menu.getChange(total);
+		List<Integer> expectedOutcome = new ArrayList<Integer>(Arrays.asList(10, 3, 1, 1));
+		Assert.assertEquals(actualOutcome, expectedOutcome);
+
+	}
+	@Test
+	public void subTractFromTotal_Should_Subtract_CostofItem_From_Total(){
+		VendingMenu menu = getMenuForTesting();
+		BigDecimal total = BigDecimal.valueOf(100);
+		BigDecimal costOfItem = BigDecimal.valueOf(3.05);
+		BigDecimal actualOutput = BigDecimal.valueOf(menu.subtractFromTotal(total, costOfItem));
+		BigDecimal expectedOutput = BigDecimal.valueOf(96.95);
+		Assert.assertEquals(actualOutput, expectedOutput);
+	}
+	@Test
+	public void addToTotal_Should_Add_totalMoneyIn_And_userInput(){
+		VendingMenu menu = getMenuForTesting();
+		BigDecimal totalMoneyIn = BigDecimal.valueOf(10);
+		BigDecimal userInput = BigDecimal.valueOf(5);
+		BigDecimal actualOutput = menu.addToTotal(totalMoneyIn, userInput);
+		BigDecimal expectedOutput = BigDecimal.valueOf(15);
+	}
 
 	private VendingMenu getMenuForTestingWithUserInput(String userInput) {
 		ByteArrayInputStream input = new ByteArrayInputStream(String.valueOf(userInput).getBytes());
@@ -96,5 +127,7 @@ public class MenuTest {
 	private VendingMenu getMenuForTesting() {
 		return getMenuForTestingWithUserInput("1" + System.lineSeparator());
 	}
+
+
 
 }
